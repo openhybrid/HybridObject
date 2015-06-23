@@ -1,0 +1,5 @@
+# idea editing tools
+.idea
+
+# osx directory files
+.DS_Store

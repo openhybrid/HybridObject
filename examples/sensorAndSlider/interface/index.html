@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slider</title>
+    <script src="object.js"></script>
+    <script src="objectIO.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        input[type=range] {
+            background-color: transparent;
+            -webkit-appearance: none;
+
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            -webkit-appearance: none;
+            height: 68px; /* Must add six because this width includes the border */
+            background-color: rgba(255, 255, 255, 0);
+            -webkit-backdrop-filter: blur(4px);
+            border: solid 4px #00edff;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            border: none;
+            height: 50px;
+            width: 50px;
+            border-radius: 2px;
+            background: #00edff;
+        }
+
+        .range-slider input[type="range"]:after {
+            height: 2px;
+            background: #fff;
+            content: ' ';
+            width: 5px;
+            top: 50%;
+            margin-top: -1px;
+            left: -5px;
+            z-index: 1;
+            position: absolute;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<input id="slider" type="range" value="0" min="0" max="255" style="width:250px">
+<script>
+    var obj = new HybridObject();
+    var slider = document.getElementById('slider');
+    var sliderValue = 0, sliderPrevValue = 0, touchState = false;
+
+    document.addEventListener("touchstart", function (e) {
+        touchState = true;
+    }, false);
+    document.addEventListener("touchend", function (e) {
+        touchState = false;
+    }, false);
+
+    obj.object.on("object", function (msg) {
+        var data = JSON.parse(msg)
+        if (obj.read("led", data)) {
+            slider.value = obj.read("led", data) * 255;
+        }
+    });
+
+    setInterval(function () {
+        sliderValue = slider.value;
+
+        if (!touchState) {
+            obj.readRequest("led");
+        } else {
+            if (sliderPrevValue != sliderValue)
+                obj.write("led", sliderValue / 255);
+
+            sliderPrevValue = sliderValue;
+        }
+    }, 50);
+</script>
+</body>
+</html>
