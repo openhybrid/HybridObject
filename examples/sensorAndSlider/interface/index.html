@@ -65,7 +65,7 @@
 
     obj.object.on("object", function (msg) {
         var data = JSON.parse(msg)
-        if (obj.read("led", data)) {
+        if (obj.read("led", data) != undefined) {
             slider.value = obj.read("led", data) * 255;
         }
     });
