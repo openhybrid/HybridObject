@@ -15,8 +15,8 @@ int counter =0;
 
 void setup() {
 obj.developer(); // allow developer tools
-obj.add("slider", "led"); // add a new I/O Point to the Object
-obj.add("slider", "sensor");
+obj.add("yourObjectName", "led"); // add a new I/O Point to the Object
+obj.add("yourObjectName", "sensor");
 }
 
 void loop() {
@@ -25,10 +25,10 @@ void loop() {
   float reading = obj.map(analogRead(A0), 0, 940); 
   
   // Write to Object
-  obj.write("slider", "sensor", reading);
+  obj.write("yourObjectName", "sensor", reading);
   
   // Read from Object
-  analogWrite(13, obj.read("slider", "led") * 255);
+  analogWrite(13, obj.read("yourObjectName", "led") * 255);
  
   delay(30);
 }

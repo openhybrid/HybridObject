@@ -114,8 +114,8 @@ void HybridObject::update() {
         // strcpy(str, Serial1.readStringUntil("\n").c_str());
         // delay(30);
 
-       Serial.println(">>serial>> ");
-       Serial.println(str);
+     //  Serial.println(">>serial>> ");
+      // Serial.println(str);
 
 
         if (strcmp(str, "okbird") == 0) {
@@ -145,6 +145,8 @@ void HybridObject::update() {
                 if (strcmp(str, "f") == 0) {
                     caseSteper = 1;
                     objectInt = 0;
+                    
+                         //  Serial.println(">>serial>>ModeF ");
                 }
                 else if (strcmp(str, "d") == 0) {
                     caseSteper = 1;
@@ -164,7 +166,9 @@ void HybridObject::update() {
                 }
                 break;
             case 1:
+               // Serial.println(">>serial>>Pos ");
                 objectInt = atoi(str);
+              //  Serial.println(objectInt);
                 if (objectInt < arraySize && objectInt >= 0) {
                     caseSteper = 2;
                 } else { caseSteper = 0; }
@@ -186,6 +190,8 @@ void HybridObject::update() {
                 break;
             case 2:
                 tempFloatBuffer = atof(str);
+               // Serial.println(">>serial>>Value ");
+               // Serial.println(tempFloatBuffer);
                 if (tempFloatBuffer > 1) tempFloatBuffer = 1;
                 if (tempFloatBuffer < 0) tempFloatBuffer = 0;
                 floatObjectArray[objectInt] = tempFloatBuffer;
