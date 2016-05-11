@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Slider</title>
-    <script src="object.js"></script>
-    <script src="objectIO.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
     <style>
         input[type=range] {
             background-color: transparent;
@@ -52,9 +49,9 @@
 <body>
 <input id="slider" type="range" value="0" min="0" max="255" style="width:250px">
 <script>
-    var obj = new HybridObject();
+      var obj = new HybridObject();
     var slider = document.getElementById('slider');
-    var sliderValue = 0, sliderPrevValue = 0, touchState = false;
+    var touchState = false;
 
     document.addEventListener("touchstart", function (e) {
         touchState = true;
@@ -63,25 +60,16 @@
         touchState = false;
     }, false);
 
-    obj.object.on("object", function (msg) {
-        var data = JSON.parse(msg)
-         if (obj.read("led", data) != undefined) {
-            slider.value = obj.read("led", data) * 255;
-        }
+
+    obj.addReadListener("led", function(e){
+        if (!touchState)
+        slider.value = e*255;
+
     });
 
-    setInterval(function () {
-        sliderValue = slider.value;
-
-        if (!touchState) {
-            obj.readRequest("led");
-        } else {
-            if (sliderPrevValue != sliderValue)
-                obj.write("led", sliderValue / 255);
-
-            sliderPrevValue = sliderValue;
-        }
-    }, 50);
+    slider.addEventListener("input", function () {
+        obj.write("led",  slider.value / 255);
+    }, false);
 </script>
 </body>
 </html>
