@@ -67,6 +67,7 @@ char HybridObject::str[SERIALBUFFERLENGTH + 1];
 char HybridObject::floatStr[FLOATSTRBUFFER + 1];
 char *HybridObject::object = new char[BUFFERLENGTH + 1];
 float HybridObject::tempFloatBuffer = 0.0;
+String HybridObject::destinationString = "";
 
 
 float *HybridObject::floatObjectArray =
@@ -164,6 +165,11 @@ void HybridObject::update() {
                     // temp mode.. buffer will be overwritten later anyway.
                     // Serial.print("two\n");
                 }
+                else if (strcmp(str, "s") == 0) {
+                    caseSteper = 30;
+                    // temp mode.. buffer will be overwritten later anyway.
+                    // Serial.print("two\n");
+                }
                 break;
             case 1:
                // Serial.println(">>serial>>Pos ");
@@ -215,6 +221,11 @@ void HybridObject::update() {
                 floatObjectArray[objectInt] = tempFloatBuffer;
                 caseSteper = 0;
                 break;
+            case 30:
+              // Serial.println(str);
+                destinationString = str;
+                caseSteper = 0;
+                break;
         };
     };
 
@@ -239,6 +250,12 @@ void HybridObject::developer() {
     developerStatus = true;
     init();
 }
+
+String HybridObject::destination() {
+    return destinationString;
+}
+
+
 
 void HybridObject::add(char *obj, char *pos, String plugin) {
     init();

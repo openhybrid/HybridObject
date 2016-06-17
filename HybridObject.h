@@ -65,6 +65,7 @@ class HybridObject {
         static void writeFaster(int pos, float data);
 
         static float read(char * obj, char * pos);
+        static String destination();
         static int   stepAvailable(char * obj, char * pos);
         static int   stepAvailable(char *  obj, char *  pos, int steps);
         static bool  readDigital(char * obj, char * pos);
@@ -96,6 +97,7 @@ class HybridObject {
         static char floatStr[];
         static char **stringArray;
         static float tempFloatBuffer;
+   static String destinationString;
 };
 
 #endif
