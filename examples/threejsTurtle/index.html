@@ -1,0 +1,140 @@
+<!-- Demo prepared for Reality Editor by Benjamin Reynolds -->
+<!-- Modifies the three.js sea3d example (https://threejs.org/examples/?q=sea#webgl_loader_sea3d) -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>THREE.js Reality Editor Example - SEA3D</title>
+        <meta charset="utf-8">
+        <!-- Fills the screen, doesn't scroll or zoom -->
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    </head>
+    <body>
+        <!-- Import the core three.js library (also hosted at https://threejs.org/build/three.min.js) -->
+        <script src="three.min.js"></script>
+
+        <!-- Import scripts needed to load the turtle model and animate it -->
+        <!-- These paths are relative to the examples directory in the three.js repository (https://github.com/mrdoob/three.js/tree/dev/examples) -->
+        <script src="js/MorphAnimMesh.js"></script>
+        <script src="js/loaders/collada/Animation.js"></script>
+        <script src="js/loaders/collada/AnimationHandler.js"></script>
+        <script src="js/loaders/collada/KeyFrameAnimation.js"></script>
+        <script src="js/loaders/sea3d/SEA3D.js"></script>
+        <script src="js/loaders/sea3d/SEA3DLZMA.js"></script>
+        <script src="js/loaders/sea3d/SEA3DLoader.js"></script>
+
+        <script>
+            // required three.js variables to render the 3d scene
+            var camera, scene, renderer;
+            // for loading the 3d model
+            var loader;
+            // containers for the three.js objects
+            var turtleObj;
+            var threejsContainerObj;
+
+            // object to communicate with the Hybrid Object API (http://openhybrid.org/reference-javascript.html)
+            var hybridObj;
+
+            // settings for rendering the scene
+            var isProjectionMatrixSet = false;
+            var rendererWidth = screen.height;
+            var rendererHeight = screen.width;
+            var aspectRatio = rendererWidth / rendererHeight;
+
+            // clock gives us time between frames so we can animate smoothly            
+            var clock = new THREE.Clock();
+
+            // constant adjusts how big the turtle will be compared to the AR marker size
+            var turtleScale = 0.4;
+
+            window.onload = function () {
+                // create a fullscreen WebGL renderer for the three.js content and add to the DOM
+                renderer = new THREE.WebGLRenderer();
+                renderer.setPixelRatio( window.devicePixelRatio );
+                renderer.setSize( rendererWidth, rendererHeight );
+                document.body.appendChild( renderer.domElement );
+
+                // create a three.js camera and scene
+                camera = new THREE.PerspectiveCamera( 70, aspectRatio, 1, 1000 );
+                scene = new THREE.Scene();
+
+                // create a parent 3D object to contain all the three js objects
+                // we can apply the marker transform to this object and all of its
+                // children objects will be affected
+                threejsContainerObj = new THREE.Object3D();
+
+                // turning off matrixAutoUpdate lets us manually set its transformation matrix
+                // to that of the Hybrid Object - instead of using rotation, scale, and position
+                // (https://threejs.org/docs/index.html#Manual/Introduction/Matrix_transformations)
+                threejsContainerObj.matrixAutoUpdate = false;
+                scene.add(threejsContainerObj);
+
+                // Add the turtle to the scene
+                turtleObj = new THREE.Object3D();
+                threejsContainerObj.add(turtleObj);
+                turtleObj.scale.set(turtleScale, turtleScale, turtleScale);
+                turtleObj.rotateX(Math.PI/2.0);
+                turtleObj.position.setZ(100);
+                // SEA3D Loader - loads a 3d model from an external file
+                loader = new THREE.SEA3D({
+                    autoPlay : true, // Auto play animations
+                    container : turtleObj // Container to add models
+                });
+                loader.onComplete = function( e ) {
+                    startAnimation();
+                };
+                loader.load( './models/sea3d/mascot.tjs.sea' );
+
+                // light for the scene
+                scene.add( new THREE.AmbientLight( 0x333333 ) );
+
+                // make the Hybrid Object fullscreen within the reality editor,
+                // and subscribe to updates to the modelview and projection matrices
+                hybridObj = new HybridObject();
+                hybridObj.setFullScreenOn();
+                hybridObj.subscribeToMatrix();
+            }
+
+            // only start animating the scene after the 3d model finishes loading
+            function startAnimation() {
+                // whenever we receive new matrices from the editor, update the 3d scene
+                hybridObj.addMatrixListener(renderScene);
+            }
+
+            // utility function to set a three.js matrix using an array of elements
+            function setMatrixFromArray(matrix, array) {
+                matrix.set( array[0], array[4], array[8], array[12],
+                            array[1], array[5], array[9], array[13],
+                            array[2], array[6], array[10], array[14],
+                            array[3], array[7], array[11], array[15]
+                        );
+            }
+
+            function renderScene(modelViewMatrix, projectionMatrix) {
+                // only set the projection matrix for the camera one time, since it stays the same
+                if (!isProjectionMatrixSet) {
+                    setMatrixFromArray(camera.projectionMatrix, projectionMatrix);
+                    isProjectionMatrixSet = true;
+                }
+
+                if (isProjectionMatrixSet) {
+
+                    // if you want to transform the children three.js objects, you could update their values here
+                    // for example, setting scale to a value sent by a Hybrid Object
+                    // turtleObj.scale.set(newTurtleScale, newTurtleScale, newTurtleScale);
+
+                    // update model view matrix
+                    setMatrixFromArray(threejsContainerObj.matrix, modelViewMatrix);
+
+                    // update SEA3D Animations
+                    var delta = clock.getDelta();
+                    THREE.SEA3D.AnimationHandler.update( delta );
+                    THREE.AnimationHandler.update( delta );
+
+                    // render the scene
+                    renderer.render( scene, camera );
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+{
+	"objectId": "turtlebO9uzm7am0wa",
+	"name": "turtle",
+	"ip": "192.168.1.20",
+	"version": "0.4.1",
+	"tcs": "2kFMsM",
+	"x": 0,
+	"y": 0,
+	"scale": 1,
+	"visible": false,
+	"visibleText": false,
+	"visibleEditing": false,
+	"developer": true,
+	"matrix3dMemory": null,
+	"objectLinks": {},
+	"objectValues": {},
+	"folder": "turtle"
+}
