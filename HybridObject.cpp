@@ -52,6 +52,10 @@
 #define BAUDRATE 115200
 #define SYSTEMDELAYFORDATA 15
 
+#ifndef HAVE_HWSERIAL1
+#define Serial1 Serial
+#endif
+
 void serialEventRun() {
     HybridObject::update();
 }
