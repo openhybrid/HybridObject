@@ -1,0 +1,21 @@
+{
+	"objectId": "cheeriosoNc0zdyrr75a",
+	"name": "cheerios",
+	"ip": "18.189.120.65",
+	"version": "1.7.0",
+	"deactivated": false,
+	"protocol": "R1",
+	"tcs": "30Tz1m",
+	"x": 0,
+	"y": 0,
+	"scale": 1,
+	"matrix": [],
+	"visible": false,
+	"visibleText": false,
+	"visibleEditing": false,
+	"developer": true,
+	"memory": {},
+	"links": {},
+	"nodes": {},
+	"frames": {}
+}

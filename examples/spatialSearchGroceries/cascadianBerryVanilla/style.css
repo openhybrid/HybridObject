@@ -1,0 +1,21 @@
+/* SEARCH */
+
+#searchResultContainer {
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  position: relative;
+  display:-webkit-box;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  -webkit-box-orient:vertical;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.visibleCertification {
+  display: inline-block;
+}
+
+.hiddenCertification {
+  display: none;
+}

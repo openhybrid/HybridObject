@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Default UI</title>
+	<script src="object.js"></script>
+</head>
+<body>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script>
+  var ingredients = {
+   milk: {text: "Milk", state: false},
+   wheat: {text: "Wheat", state: true},
+   nuts: {text: "Nuts", state: true},
+   fish: {text: "Fish", state: false},
+   pork: {text: "Pork", state: false},
+   beef: {text: "Beef", state: false},
+   vegetarian: {text: "Vegetarian", state: true},
+   cornSyrup: {text: "Corn Syrup", state: true},
+   organic: {text: "Organic", state: false}
+  };
+  </script>
+
+  <div id="searchResultContainer">
+    <img src="images/positiveBig.svg" class="hiddenCertification" id="positiveIcon" />
+    <img src="images/negativeBig.svg" class="hiddenCertification" id="negativeIcon" />
+  </div>
+	<img src="images/scanner.png" width="300" height="300" alt="" id="scanner"/>
+
+  <script src="search.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,21 @@
+{
+	"objectId": "wheatiestu1hp6rnakw0",
+	"name": "wheaties",
+	"ip": "18.189.10.75",
+	"version": "1.7.0",
+	"deactivated": false,
+	"protocol": "R1",
+	"tcs": "oK7X9",
+	"x": 0,
+	"y": 0,
+	"scale": 1,
+	"matrix": [],
+	"visible": false,
+	"visibleText": false,
+	"visibleEditing": false,
+	"developer": true,
+	"memory": {},
+	"links": {},
+	"nodes": {},
+	"frames": {}
+}
